@@ -63,11 +63,13 @@ body {
   color: ${(props) => props.theme.white.darker};
   line-height: 1.2;
   background-color: black;
+  overflow-x: hidden;
 }
 a {
   text-decoration:none;
   color:inherit;
 }
+button {cursor: pointer;}
 `;
 
 const client = new QueryClient();
