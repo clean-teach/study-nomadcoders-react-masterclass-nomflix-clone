@@ -1,8 +1,9 @@
 import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 import App from './App';
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { theme } from './theme';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -69,16 +70,20 @@ a {
 }
 `;
 
+const client = new QueryClient();
+
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 root.render(
   // <React.StrictMode>
   <RecoilRoot>
-    <ThemeProvider theme={theme}>
+    <QueryClientProvider client={client}>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <App />
       </ThemeProvider>
-  </RecoilRoot>
+    </QueryClientProvider>
+  </RecoilRoot>,
   // </React.StrictMode>
 );
