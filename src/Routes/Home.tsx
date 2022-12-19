@@ -9,8 +9,17 @@ import {
   IMovie,
 } from '../api';
 import { makeImagePath } from '../utils';
-import DetailBox from '../Components/DetailBox';
+// import DetailBox from '../Components/DetailBox';
 import Slider from '../Components/Slider';
+import { AnimatePresence, useScroll } from 'framer-motion';
+import {
+  BigCover,
+  BigMovie,
+  BigOverview,
+  BigTitle,
+  Overlay,
+} from '../styles/detailBox';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 const Wrapper = styled.div`
   background-color: black;
@@ -42,6 +51,11 @@ const Overview = styled.p`
 `;
 
 function Home() {
+  const history = useHistory();
+  const bigMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
+  const { scrollY } = useScroll();
+  const onOverlayClick = () => history.push('/');
+
   const { data: latestData, isLoading: isLoadingLatest } = useQuery<IMovie>(
     ['movies', 'latest'],
     getlastedMovies,
@@ -67,6 +81,10 @@ function Home() {
     { data: upcomingData, isLoading: isLoadingUpcoming },
   ] = useMultipleQuery();
 
+  // const clickedMovie =
+  //   bigMovieMatch?.params.movieId &&
+  //   data?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
+
   return (
     <Wrapper style={{ height: '200vh' }}>
       {isLoadingNowPlaying &&
@@ -83,23 +101,56 @@ function Home() {
             </Banner>
           )}
           {nowPlayingData && (
-            <>
-              <Slider data={nowPlayingData} sliderTitle={'Now Playing'} />
-              <DetailBox data={nowPlayingData} />
-            </>
+            <Slider
+              data={nowPlayingData}
+              sliderTitle={'Now Playing'}
+              category={'movie'}
+            />
           )}
           {topRatedData && (
-            <>
-              <Slider data={topRatedData} sliderTitle={'Top Rated'} />
-              <DetailBox data={topRatedData} />
-            </>
+            <Slider
+              data={topRatedData}
+              sliderTitle={'Top Rated'}
+              category={'movie'}
+            />
           )}
           {upcomingData && (
-            <>
-              <Slider data={upcomingData} sliderTitle={'Upcoming'} />
-              <DetailBox data={upcomingData} />
-            </>
+            <Slider
+              data={upcomingData}
+              sliderTitle={'Upcoming'}
+              category={'movie'}
+            />
           )}
+          {/* <AnimatePresence>
+            {bigMovieMatch ? (
+              <>
+                <Overlay
+                  onClick={onOverlayClick}
+                  exit={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                />
+                <BigMovie
+                  style={{ top: scrollY.get() + 100 }}
+                  layoutId={bigMovieMatch.params.movieId}
+                >
+                  {clickedMovie && (
+                    <>
+                      <BigCover
+                        style={{
+                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                            clickedMovie.backdrop_path,
+                            'w500',
+                          )})`,
+                        }}
+                      />
+                      <BigTitle>{clickedMovie.title}</BigTitle>
+                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                    </>
+                  )}
+                </BigMovie>
+              </>
+            ) : null}
+          </AnimatePresence> */}
         </>
       )}
     </Wrapper>

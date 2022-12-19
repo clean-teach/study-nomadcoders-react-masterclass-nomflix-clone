@@ -61,3 +61,8 @@ export function getTopRatedTv() {
     `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=ko-KR`,
   ).then((response) => response.json());
 }
+export function getSearchMulty(query: string | null) {
+  return fetch(
+    `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}`,
+  ).then((response) => response.json());
+}

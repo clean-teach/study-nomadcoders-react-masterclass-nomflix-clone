@@ -9,7 +9,7 @@ import {
   IMovie,
 } from '../api';
 import { makeImagePath } from '../utils';
-import DetailBox from '../Components/DetailBox';
+// import DetailBox from '../Components/DetailBox';
 import Slider from '../Components/Slider';
 
 const Wrapper = styled.div`
@@ -84,20 +84,32 @@ function Tv() {
           )}
           {nowPlayingData && (
             <>
-              <Slider data={nowPlayingData} sliderTitle={'Now Playing'} />
-              <DetailBox data={nowPlayingData} />
+              <Slider
+                data={nowPlayingData}
+                sliderTitle={'Now Playing'}
+                category={'tv'}
+              />
+              {/* <DetailBox data={nowPlayingData} /> */}
             </>
           )}
           {topRatedData && (
             <>
-              <Slider data={topRatedData} sliderTitle={'Top Rated'} />
-              <DetailBox data={topRatedData} />
+              <Slider
+                data={topRatedData}
+                sliderTitle={'Top Rated'}
+                category={'tv'}
+              />
+              {/* <DetailBox data={topRatedData} /> */}
             </>
           )}
           {upcomingData && (
             <>
-              <Slider data={upcomingData} sliderTitle={'Upcoming'} />
-              <DetailBox data={upcomingData} />
+              <Slider
+                data={upcomingData}
+                sliderTitle={'Upcoming'}
+                category={'tv'}
+              />
+              {/* <DetailBox data={upcomingData} /> */}
             </>
           )}
         </>

@@ -119,9 +119,10 @@ const offset = 6;
 interface IProps {
   data: IGetMoviesResult;
   sliderTitle: string;
+  category: 'movie' | 'search' | 'tv';
 }
 
-function Slider({ data, sliderTitle }: IProps) {
+function Slider({ data, sliderTitle, category }: IProps) {
   const history = useHistory();
   const [index, setIndex] = useState(0);
   const [isHover, setIsHover] = useState(false);
@@ -150,7 +151,7 @@ function Slider({ data, sliderTitle }: IProps) {
     }
   };
   const onBoxClicked = (movieId: number) => {
-    history.push(`/movies/${movieId}`);
+    history.push(`/${category}/${movieId}`);
   };
 
   return (
