@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/study-nomadcoders-react-masterclass-nomflix-clone/static/js/main.0c4b25d0.js",
+    "main.js": "/study-nomadcoders-react-masterclass-nomflix-clone/static/js/main.36e24981.js",
     "index.html": "/study-nomadcoders-react-masterclass-nomflix-clone/index.html",
-    "main.0c4b25d0.js.map": "/study-nomadcoders-react-masterclass-nomflix-clone/static/js/main.0c4b25d0.js.map"
+    "main.36e24981.js.map": "/study-nomadcoders-react-masterclass-nomflix-clone/static/js/main.36e24981.js.map"
   },
   "entrypoints": [
-    "static/js/main.0c4b25d0.js"
+    "static/js/main.36e24981.js"
   ]
 }
