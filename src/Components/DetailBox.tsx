@@ -1,7 +1,7 @@
 import React from 'react';
 
 function DetailBox() {
-  return <div></div>;
+  return <div>엣헤</div>;
 }
 
 export default DetailBox;
@@ -10,7 +10,6 @@ export default DetailBox;
 // import { useHistory, useRouteMatch } from 'react-router-dom';
 // import { makeImagePath } from '../utils';
 // import { IGetMoviesResult } from '../api';
-// import React from 'react';
 
 // function DetailBox({ data }: IProps) {
 //   const history = useHistory();
