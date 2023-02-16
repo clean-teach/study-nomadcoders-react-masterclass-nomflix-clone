@@ -19,7 +19,7 @@ import {
   BigTitle,
   Overlay,
 } from '../styles/detailBox';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   background-color: black;
@@ -51,10 +51,11 @@ const Overview = styled.p`
 `;
 
 function Home() {
-  const history = useHistory();
-  const bigMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
+  // const bigMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
+
+  const navigate = useNavigate();
   const { scrollY } = useScroll();
-  const onOverlayClick = () => history.push('/');
+  const onOverlayClick = () => navigate('/');
 
   const { data: latestData, isLoading: isLoadingLatest } = useQuery<IMovie>(
     ['movies', 'latest'],

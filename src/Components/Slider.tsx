@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IGetMoviesResult } from '../api';
 import { makeImagePath } from '../utils';
@@ -123,11 +123,13 @@ interface IProps {
 }
 
 function Slider({ data, sliderTitle, category }: IProps) {
-  const history = useHistory();
   const [index, setIndex] = useState(0);
   const [isHover, setIsHover] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [isBack, setIsBack] = useState(false);
+
+  const navigate = useNavigate();
+
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
   const incraseIndex = () => {
@@ -151,7 +153,7 @@ function Slider({ data, sliderTitle, category }: IProps) {
     }
   };
   const onBoxClicked = (movieId: number) => {
-    history.push(`/${category}/${movieId}`);
+    navigate(`/${category}/${movieId}`);
   };
 
   return (

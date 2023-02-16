@@ -4,27 +4,31 @@ import Home from './Home';
 import Search from './Search';
 import Tv from './Tv';
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <App />,
+      children: [
+        {
+          path: '',
+          element: <Home />,
+        },
+        {
+          path: '/movie',
+          element: <Tv />,
+        },
+        {
+          path: '/movie/:movieId',
+          element: <Search />,
+        },
+      ],
+      errorElement: <div>에러발생</div>,
+    },
+  ],
   {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        path: '',
-        element: <Home />,
-      },
-      {
-        path: '/movie',
-        element: <Tv />,
-        children: [
-          {
-            path: '/:movieId',
-            element: <Search />,
-          },
-        ],
-      },
-    ],
+    basename: '/study-nomadcoders-react-masterclass-nomflix-clone',
   },
-]);
+);
 
 export default router;
