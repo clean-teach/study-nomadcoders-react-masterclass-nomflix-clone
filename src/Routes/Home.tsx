@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import {
@@ -86,6 +87,12 @@ function Home() {
   //   bigMovieMatch?.params.movieId &&
   //   data?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
 
+  useEffect(() => {
+    if (latestData?.poster_path === null) {
+      console.log('해당 작품은 이미지가 존재하지 않습니다.');
+    }
+  }, [latestData]);
+
   return (
     <Wrapper style={{ height: '200vh' }}>
       {isLoadingNowPlaying &&
@@ -96,7 +103,13 @@ function Home() {
       ) : (
         <>
           {latestData && (
-            <Banner bgPhoto={makeImagePath(latestData.poster_path || '')}>
+            <Banner
+              bgPhoto={
+                latestData.poster_path
+                  ? makeImagePath(latestData.poster_path || '')
+                  : 'black'
+              }
+            >
               <Title>{latestData.title}</Title>
               <Overview>{latestData.overview}</Overview>
             </Banner>
