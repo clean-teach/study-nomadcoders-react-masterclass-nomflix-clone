@@ -10,7 +10,7 @@ export const Overlay = styled(motion.div)`
   opacity: 0;
 `;
 
-export const BigMovie = styled(motion.div)`
+export const DetailPopUpBox = styled(motion.div)`
   position: absolute;
   width: 40vw;
   height: 80vh;
@@ -18,28 +18,45 @@ export const BigMovie = styled(motion.div)`
   right: 0;
   margin: 0 auto;
   border-radius: 15px;
-  overflow: hidden;
+  overflow-y: scroll;
   background-color: ${(props) => props.theme.black.lighter};
-`;
-
-export const BigCover = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: center center;
-  height: 400px;
-`;
-
-export const BigTitle = styled.h3`
-  color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-  font-size: 46px;
-  position: relative;
-  top: -80px;
-`;
-
-export const BigOverview = styled.p`
-  padding: 20px;
-  position: relative;
-  top: -80px;
-  color: ${(props) => props.theme.white.lighter};
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  .cover-area {
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    height: 400px;
+  }
+  .title {
+    color: ${(props) => props.theme.white.lighter};
+    padding: 20px;
+    font-size: 46px;
+    position: relative;
+    top: -80px;
+  }
+  .overview {
+    padding: 20px;
+    position: relative;
+    top: -80px;
+    color: ${(props) => props.theme.white.lighter};
+  }
+  dl + dl {
+    margin-top: 1rem;
+  }
+  dt {
+    display: inline-block;
+  }
+  dd {
+    display: inline-block;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    ul li {
+      display: inline-block;
+      &:after {
+        content: ', ';
+      }
+    }
+  }
 `;
