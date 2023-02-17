@@ -6,21 +6,12 @@ import {
   getNowPlayingMovies,
   getTopRatedMovies,
   getUpcomingMovies,
-  IGetMoviesResult,
-  IMovie,
-} from '../api';
-import { makeImagePath } from '../utils';
-// import DetailBox from '../Components/DetailBox';
+} from '../apis/movies';
+import { makeImagePath } from '../utils/utils';
 import Slider from '../Components/Slider';
-import { AnimatePresence, useScroll } from 'framer-motion';
-import {
-  BigCover,
-  BigMovie,
-  BigOverview,
-  BigTitle,
-  Overlay,
-} from '../styles/detailBox';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import MovieDetail from './MovieDetail';
+import { IGetMoviesResult, IMovie } from '../types/types';
 
 const Wrapper = styled.div`
   background-color: black;
@@ -52,11 +43,7 @@ const Overview = styled.p`
 `;
 
 function Home() {
-  // const bigMovieMatch = useRouteMatch<{ movieId: string }>('/movies/:movieId');
-
-  const navigate = useNavigate();
-  const { scrollY } = useScroll();
-  const onOverlayClick = () => navigate('/');
+  const params = useParams();
 
   const { data: latestData, isLoading: isLoadingLatest } = useQuery<IMovie>(
     ['movies', 'latest'],
@@ -82,10 +69,6 @@ function Home() {
     { data: topRatedData, isLoading: isLoadingTopRated },
     { data: upcomingData, isLoading: isLoadingUpcoming },
   ] = useMultipleQuery();
-
-  // const clickedMovie =
-  //   bigMovieMatch?.params.movieId &&
-  //   data?.results.find((movie) => movie.id === +bigMovieMatch.params.movieId);
 
   useEffect(() => {
     if (latestData?.poster_path === null) {
@@ -135,38 +118,11 @@ function Home() {
               category={'movie'}
             />
           )}
-          {/* <AnimatePresence>
-            {bigMovieMatch ? (
-              <>
-                <Overlay
-                  onClick={onOverlayClick}
-                  exit={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                />
-                <BigMovie
-                  style={{ top: scrollY.get() + 100 }}
-                  layoutId={bigMovieMatch.params.movieId}
-                >
-                  {clickedMovie && (
-                    <>
-                      <BigCover
-                        style={{
-                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                            clickedMovie.backdrop_path,
-                            'w500',
-                          )})`,
-                        }}
-                      />
-                      <BigTitle>{clickedMovie.title}</BigTitle>
-                      <BigOverview>{clickedMovie.overview}</BigOverview>
-                    </>
-                  )}
-                </BigMovie>
-              </>
-            ) : null}
-          </AnimatePresence> */}
         </>
       )}
+      {params.movieId !== undefined ? (
+        <MovieDetail params={params.movieId} />
+      ) : null}
     </Wrapper>
   );
 }

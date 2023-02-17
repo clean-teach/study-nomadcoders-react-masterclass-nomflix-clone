@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import {
@@ -5,12 +6,12 @@ import {
   getlastedTv,
   getPopularTv,
   getTopRatedTv,
-  IGetMoviesResult,
-  IMovie,
-} from '../api';
-import { makeImagePath } from '../utils';
-// import DetailBox from '../Components/DetailBox';
+} from '../apis/tvShows';
+import { makeImagePath } from '../utils/utils';
 import Slider from '../Components/Slider';
+import { useParams } from 'react-router-dom';
+import TvDetail from './TvDetail';
+import { IGetMoviesResult, IMovie } from '../types/types';
 
 const Wrapper = styled.div`
   background-color: black;
@@ -42,6 +43,8 @@ const Overview = styled.p`
 `;
 
 function Tv() {
+  const params = useParams();
+
   const { data: latestData, isLoading: isLoadingLatest } = useQuery<IMovie>(
     ['tvShow', 'latest'],
     getlastedTv,
@@ -67,6 +70,12 @@ function Tv() {
     { data: upcomingData, isLoading: isLoadingUpcoming },
   ] = useMultipleQuery();
 
+  useEffect(() => {
+    if (latestData?.poster_path === null) {
+      console.log('해당 작품은 이미지가 존재하지 않습니다.');
+    }
+  }, [latestData]);
+
   return (
     <Wrapper style={{ height: '200vh' }}>
       {isLoadingNowPlaying &&
@@ -77,7 +86,13 @@ function Tv() {
       ) : (
         <>
           {latestData && (
-            <Banner bgPhoto={makeImagePath(latestData.poster_path || '')}>
+            <Banner
+              bgPhoto={
+                latestData.poster_path
+                  ? makeImagePath(latestData.poster_path || '')
+                  : 'black'
+              }
+            >
               <Title>{latestData.title}</Title>
               <Overview>{latestData.overview}</Overview>
             </Banner>
@@ -89,7 +104,6 @@ function Tv() {
                 sliderTitle={'Now Playing'}
                 category={'tv'}
               />
-              {/* <DetailBox data={nowPlayingData} /> */}
             </>
           )}
           {topRatedData && (
@@ -99,7 +113,6 @@ function Tv() {
                 sliderTitle={'Top Rated'}
                 category={'tv'}
               />
-              {/* <DetailBox data={topRatedData} /> */}
             </>
           )}
           {upcomingData && (
@@ -109,11 +122,11 @@ function Tv() {
                 sliderTitle={'Upcoming'}
                 category={'tv'}
               />
-              {/* <DetailBox data={upcomingData} /> */}
             </>
           )}
         </>
       )}
+      {params.tvId !== undefined ? <TvDetail params={params.tvId} /> : null}
     </Wrapper>
   );
 }

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IGetMoviesResult } from '../api';
-import { makeImagePath } from '../utils';
+import { makeImagePath } from '../utils/utils';
+import { IGetMoviesResult } from '../types/types';
 
 const Wrapper = styled.div`
   position: relative;

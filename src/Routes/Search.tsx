@@ -1,8 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { getSearchMulty, IGetMoviesResult } from '../api';
 import styled from 'styled-components';
 import Slider from '../Components/Slider';
+import { IGetMoviesResult } from '../types/types';
+import { getSearchMulty } from '../apis/search';
 // import DetailBox from '../Components/DetailBox';
 
 const Wrapper = styled.div`
