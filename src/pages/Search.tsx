@@ -51,7 +51,7 @@ function Search() {
 
   useEffect(() => {
     searchData.mutate();
-    // console.log(searchData.data);
+    console.log(searchData.data);
   }, [location]);
 
   return searchData ? (

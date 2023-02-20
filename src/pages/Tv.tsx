@@ -72,6 +72,7 @@ function Tv() {
   ] = useMultipleQuery();
 
   useEffect(() => {
+    console.log(latestData);
     if (latestData?.poster_path === null) {
       console.log('해당 작품은 이미지가 존재하지 않습니다.');
     }
@@ -94,7 +95,7 @@ function Tv() {
                   : 'black'
               }
             >
-              <Title>{latestData.title}</Title>
+              <Title>{latestData.title || latestData.name}</Title>
               <Overview>{latestData.overview}</Overview>
             </Banner>
           )}

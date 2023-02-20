@@ -13,6 +13,16 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   background-size: cover;
   background-position: center;
   cursor: pointer;
+  .no-img {
+    width: 100%;
+    height: 100%;
+    font-size: 0.875rem;
+    text-align: center;
+    color: ${(props) => props.theme.black.lighter};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const Info = styled(motion.div)`
@@ -82,8 +92,12 @@ function ContantsBox({ apiResultData, category, keyword }: IProps) {
       onClick={() => onBoxClicked(apiResultData.id)}
       layoutId={apiResultData.id + ''}
     >
+      {apiResultData.backdrop_path === null ||
+      apiResultData.backdrop_path === undefined ? (
+        <p className="no-img">이미지가 없습니다.</p>
+      ) : null}
       <Info variants={infoVariants}>
-        <h4>{apiResultData.title}</h4>
+        <h4>{apiResultData.title || apiResultData.name}</h4>
       </Info>
     </Box>
   );
