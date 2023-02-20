@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
-import Home from './Home';
-import Search from './Search';
-import Tv from './Tv';
+import Home from '../pages/Home';
+import Search from '../pages/Search';
+import Tv from '../pages/Tv';
 
 const router = createBrowserRouter(
   [
@@ -28,6 +28,10 @@ const router = createBrowserRouter(
         },
         {
           path: '/search',
+          element: <Search />,
+        },
+        {
+          path: '/search/:searchId',
           element: <Search />,
         },
       ],

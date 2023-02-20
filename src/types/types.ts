@@ -5,6 +5,7 @@ export interface IMovie {
   title: string;
   name: string;
   overview: string;
+  media_type: Category;
 }
 
 export interface IGetMoviesResult {
@@ -16,4 +17,10 @@ export interface IGetMoviesResult {
   results: IMovie[];
   total_pages: Number;
   total_results: Number;
+}
+
+export enum Category {
+  movie = 'movie',
+  search = 'search',
+  tv = 'tv',
 }

@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { makeImagePath } from '../utils/utils';
-import { IGetMoviesResult } from '../types/types';
+import { Category, IGetMoviesResult } from '../types/types';
+import ContantsBox from './ContantsBox';
 
 const Wrapper = styled.div`
   position: relative;
@@ -45,34 +44,13 @@ const Row = styled(motion.div)`
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
-`;
-
-const Box = styled(motion.div)<{ $bgPhoto: string }>`
-  height: 200px;
-  font-size: 66px;
-  background-color: white;
-  background-image: url(${(props) => props.$bgPhoto});
-  background-size: cover;
-  background-position: center;
-  cursor: pointer;
-  &:first-child {
-    transform-origin: center left;
-  }
-  &:last-child {
-    transform-origin: center right;
-  }
-`;
-
-const Info = styled(motion.div)`
-  padding: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  h4 {
-    text-align: center;
-    font-size: 18px;
+  & > * {
+    &:first-child {
+      transform-origin: center left;
+    }
+    &:last-child {
+      transform-origin: center right;
+    }
   }
 `;
 
@@ -88,72 +66,41 @@ const rowVariants = {
   }),
 };
 
-const boxVariants = {
-  normal: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.3,
-    y: -80,
-    transition: {
-      delay: 0.5,
-      duaration: 0.1,
-      type: 'tween',
-    },
-  },
-};
-
-const infoVariants = {
-  hover: {
-    opacity: 1,
-    transition: {
-      delay: 0.5,
-      duaration: 0.1,
-      type: 'tween',
-    },
-  },
-};
-
 const offset = 6;
 
 interface IProps {
-  data: IGetMoviesResult;
+  apiResultData: IGetMoviesResult;
   sliderTitle: string;
-  category: 'movie' | 'search' | 'tv';
+  category: Category;
 }
 
-function Slider({ data, sliderTitle, category }: IProps) {
+function Slider({ apiResultData, sliderTitle, category }: IProps) {
   const [index, setIndex] = useState(0);
   const [isHover, setIsHover] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [isBack, setIsBack] = useState(false);
 
-  const navigate = useNavigate();
-
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
   const incraseIndex = () => {
-    if (data) {
+    if (apiResultData) {
       if (leaving) return;
       setIsBack(false);
       toggleLeaving();
-      const totalMovies = data.results.length - 1;
+      const totalMovies = apiResultData.results.length - 1;
       const maxIndex = Math.ceil(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
   const decraseIndex = () => {
-    if (data) {
+    if (apiResultData) {
       if (leaving) return;
       setIsBack(true);
       toggleLeaving();
-      const totalMovies = data.results.length - 1;
+      const totalMovies = apiResultData.results.length - 1;
       const maxIndex = Math.ceil(totalMovies / offset) - 1;
       setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
-  };
-  const onBoxClicked = (movieId: number) => {
-    navigate(`/${category}/${movieId}`);
   };
 
   return (
@@ -176,24 +123,15 @@ function Slider({ data, sliderTitle, category }: IProps) {
           transition={{ type: 'tween', duration: 1 }}
           key={index}
         >
-          {data.results
+          {apiResultData.results
             .slice(1)
             .slice(offset * index, offset * index + offset)
             .map((movie) => (
-              <Box
+              <ContantsBox
                 key={movie.id}
-                $bgPhoto={makeImagePath(movie.backdrop_path, 'w500')}
-                whileHover="hover"
-                initial="normal"
-                variants={boxVariants}
-                transition={{ type: 'tween' }}
-                onClick={() => onBoxClicked(movie.id)}
-                layoutId={movie.id + ''}
-              >
-                <Info variants={infoVariants}>
-                  <h4>{movie.title}</h4>
-                </Info>
-              </Box>
+                apiResultData={movie}
+                category={category}
+              />
             ))}
         </Row>
       </AnimatePresence>

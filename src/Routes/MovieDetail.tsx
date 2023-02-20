@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query';
-import { useLocation } from 'react-router-dom';
 import { getMovieDetail } from '../apis/movies';
 import DetailBox from '../Components/DetailBox';
 

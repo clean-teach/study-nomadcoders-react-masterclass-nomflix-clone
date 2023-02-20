@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import {
-  getAiringTodayTv,
-  getlastedTv,
-  getPopularTv,
-  getTopRatedTv,
-} from '../apis/tvShows';
+  getlastedMovies,
+  getNowPlayingMovies,
+  getTopRatedMovies,
+  getUpcomingMovies,
+} from '../apis/movies';
 import { makeImagePath } from '../utils/utils';
 import Slider from '../Components/Slider';
 import { useParams } from 'react-router-dom';
-import TvDetail from './TvDetail';
-import { IGetMoviesResult, IMovie } from '../types/types';
+import MovieDetail from '../Routes/MovieDetail';
+import { Category, IGetMoviesResult, IMovie } from '../types/types';
 
 const Wrapper = styled.div`
   background-color: black;
@@ -42,25 +42,26 @@ const Overview = styled.p`
   width: 50%;
 `;
 
-function Tv() {
+function Home() {
   const params = useParams();
+  const queryKey_0 = 'movies';
 
   const { data: latestData, isLoading: isLoadingLatest } = useQuery<IMovie>(
-    ['tvShow', 'latest'],
-    getlastedTv,
+    [queryKey_0, 'latest'],
+    getlastedMovies,
   );
   const useMultipleQuery = () => {
     const nowPlaying = useQuery<IGetMoviesResult>(
-      ['tvShow', 'nowPlaying'],
-      getAiringTodayTv,
+      [queryKey_0, 'nowPlaying'],
+      getNowPlayingMovies,
     );
     const topRated = useQuery<IGetMoviesResult>(
-      ['tvShow', 'topRated'],
-      getPopularTv,
+      [queryKey_0, 'topRated'],
+      getTopRatedMovies,
     );
     const upcoming = useQuery<IGetMoviesResult>(
-      ['tvShow', 'upcoming'],
-      getTopRatedTv,
+      [queryKey_0, 'upcoming'],
+      getUpcomingMovies,
     );
     return [nowPlaying, topRated, upcoming];
   };
@@ -98,37 +99,33 @@ function Tv() {
             </Banner>
           )}
           {nowPlayingData && (
-            <>
-              <Slider
-                data={nowPlayingData}
-                sliderTitle={'Now Playing'}
-                category={'tv'}
-              />
-            </>
+            <Slider
+              apiResultData={nowPlayingData}
+              sliderTitle={'Now Playing'}
+              category={Category.movie}
+            />
           )}
           {topRatedData && (
-            <>
-              <Slider
-                data={topRatedData}
-                sliderTitle={'Top Rated'}
-                category={'tv'}
-              />
-            </>
+            <Slider
+              apiResultData={topRatedData}
+              sliderTitle={'Top Rated'}
+              category={Category.movie}
+            />
           )}
           {upcomingData && (
-            <>
-              <Slider
-                data={upcomingData}
-                sliderTitle={'Upcoming'}
-                category={'tv'}
-              />
-            </>
+            <Slider
+              apiResultData={upcomingData}
+              sliderTitle={'Upcoming'}
+              category={Category.movie}
+            />
           )}
         </>
       )}
-      {params.tvId !== undefined ? <TvDetail params={params.tvId} /> : null}
+      {params.movieId !== undefined ? (
+        <MovieDetail params={params.movieId} />
+      ) : null}
     </Wrapper>
   );
 }
 
-export default Tv;
+export default Home;

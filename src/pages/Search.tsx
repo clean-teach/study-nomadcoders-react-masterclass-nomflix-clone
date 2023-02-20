@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
-import { IGetMoviesResult } from '../types/types';
+import { Category, IGetMoviesResult } from '../types/types';
 import { getSearchMulty } from '../apis/search';
-import { makeImagePath } from '../utils/utils';
+import ContantsBox from '../Components/ContantsBox';
+import MovieDetail from '../Routes/MovieDetail';
+import TvDetail from '../Routes/TvDetail';
 
 const Wrapper = styled.div`
   background-color: black;
@@ -28,41 +30,28 @@ const ListArea = styled.ul`
   gap: 5px;
   grid-template-columns: repeat(4, 1fr);
 `;
-const Box = styled.li<{ $bgPhoto: string }>`
-  height: 200px;
-  font-size: 66px;
-  background-color: white;
-  background-image: url(${(props) => props.$bgPhoto});
-  background-size: cover;
-  background-position: center;
-  color: ${(props) => props.theme.black.darker};
-  position: relative;
-  h4 {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 1rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-  }
-`;
 
 const Warning = styled.p`
   text-align: center;
 `;
 
 function Search() {
+  const params = useParams();
   const location = useLocation();
   const keyword = new URLSearchParams(location.search).get('keyword');
   const searchData = useMutation<IGetMoviesResult>(() =>
     getSearchMulty(keyword),
   );
 
+  const clickedCategory = () => {
+    return searchData.data?.results.find(
+      (result) => result.id === Number(params.searchId),
+    )?.media_type;
+  };
+
   useEffect(() => {
     searchData.mutate();
-    // console.log(searchData);
+    // console.log(searchData.data);
   }, [location]);
 
   return searchData ? (
@@ -76,12 +65,12 @@ function Search() {
           {searchData.data.results.length > 0 ? (
             <ListArea>
               {searchData.data.results.map((result) => (
-                <Box
+                <ContantsBox
                   key={result.id}
-                  $bgPhoto={makeImagePath(result.poster_path, 'w500')}
-                >
-                  <h4>{result.title || result.name}</h4>
-                </Box>
+                  apiResultData={result}
+                  category={Category.search}
+                  keyword={keyword}
+                />
               ))}
             </ListArea>
           ) : (
@@ -89,6 +78,14 @@ function Search() {
           )}
         </>
       )}
+      {params.searchId !== undefined
+        ? (clickedCategory() === Category.movie && (
+            <MovieDetail params={params.searchId} />
+          )) ||
+          (clickedCategory() === Category.tv && (
+            <TvDetail params={params.searchId} />
+          ))
+        : null}
     </Wrapper>
   ) : null;
 }
