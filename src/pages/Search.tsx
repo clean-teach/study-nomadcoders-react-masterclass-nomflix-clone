@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
-import { Category, IGetMoviesResult } from '../types/types';
+import { IGetMoviesResult } from '../types/types';
 import { getSearchMulty } from '../apis/search';
 import ContantsBox from '../Components/ContantsBox';
 import MovieDetail from '../Routes/MovieDetail';
@@ -43,16 +43,9 @@ function Search() {
     getSearchMulty(keyword),
   );
 
-  const clickedCategory = () => {
-    return searchData.data?.results.find(
-      (result) => result.id === Number(params.searchId),
-    )?.media_type;
-  };
-
   useEffect(() => {
     searchData.mutate();
-    console.log(searchData.data);
-  }, [location]);
+  }, []);
 
   return searchData ? (
     <Wrapper>
@@ -68,7 +61,7 @@ function Search() {
                 <ContantsBox
                   key={result.id}
                   apiResultData={result}
-                  category={Category.search}
+                  category={result.media_type}
                   keyword={keyword}
                 />
               ))}
@@ -78,14 +71,10 @@ function Search() {
           )}
         </>
       )}
-      {params.searchId !== undefined
-        ? (clickedCategory() === Category.movie && (
-            <MovieDetail params={params.searchId} />
-          )) ||
-          (clickedCategory() === Category.tv && (
-            <TvDetail params={params.searchId} />
-          ))
-        : null}
+      {params.tvId !== undefined ? <TvDetail params={params.tvId} /> : null}
+      {params.movieId !== undefined ? (
+        <MovieDetail params={params.movieId} />
+      ) : null}
     </Wrapper>
   ) : null;
 }

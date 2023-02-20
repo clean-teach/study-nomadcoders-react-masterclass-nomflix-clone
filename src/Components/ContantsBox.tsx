@@ -74,11 +74,7 @@ function ContantsBox({ apiResultData, category, keyword }: IProps) {
   const navigate = useNavigate();
 
   const onBoxClicked = (movieId: number) => {
-    // if (category === Category.search) {
-    //   navigate(`/search?keyword=${keyword}/${movieId}`);
-    // } else {
-    navigate(`/${category}/${movieId}`);
-    // }
+    navigate(`./${category}/${movieId}`);
   };
 
   return (

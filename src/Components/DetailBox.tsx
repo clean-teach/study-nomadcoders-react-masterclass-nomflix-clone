@@ -25,8 +25,6 @@ function DetailBox({ clickedData }: IProps) {
   };
   const { scrollY } = useScroll();
 
-  // console.log(clickedData);
-
   return clickedData ? (
     <AnimatePresence>
       {clickedData.isLoading && <p>로딩중 ...</p>}
